@@ -1,25 +1,32 @@
-import logo from './logo.svg';
+import React from'react';
 import './App.css';
+import Simpsons from'./components/Simpsons';
 
-function App() {
+
+class App extends React.Component{
+  state = {
+    simpsons : ''
+  }
+  componentDidMount() {
+    this.fetchData()
+  }
+  fetchData = () => {
+    fetch('https://simpsons-quotes-api.herokuapp.com/quotes')
+    .then(res => res.json())
+    .then(data => {
+      this.setState({ simpsons : data[0] })
+    })
+  }
+  render() {
+    console.log(this.state.simpsons);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Hello this is an App</h1>
+      <input type='button' value='Click' onClick={this.fetchData}/>
+      <Simpsons simpsons= {this.state.simpsons} />
     </div>
   );
+}
 }
 
 export default App;
